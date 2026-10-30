@@ -1,0 +1,21 @@
+* text=auto
+*.c text
+*.h text
+*.md text
+*.txt text
+*.json text
+*.uvprojx text
+*.uvoptx text
+*.ioc text
+*.py text
+*.js text
+*.css text
+*.html text
+*.docx binary
+*.bin binary
+*.hex binary
+*.axf binary
+
+# Vendored ST code and generated startup assembly keep their original whitespace.
+car-/Drivers/** -whitespace
+car-/MDK-ARM/startup_stm32f103xe.s -whitespace

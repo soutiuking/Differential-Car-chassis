@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>4×4 小车定位与控制</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>4×4 小车定位与控制</h1>
+    <p class="sub">ESP32-S3 AP · <span id="apInfo">Crawler-Car</span> · <span id="conn" class="bad">未连接</span></p>
+  </div>
+  <div class="head-actions">
+    <button id="btnDaily" class="mode active">日常测试</button>
+    <button id="btnComp" class="mode">比赛模式</button>
+    <button id="btnEnable" class="ok">使能</button>
+    <button id="btnDisable" class="warn">断使能</button>
+    <button id="btnStop" class="danger">急停</button>
+  </div>
+</header>
+
+<main class="layout">
+  <section class="card field-card">
+    <div class="toolbar">
+      <button data-tool="none" class="tool active">观察</button>
+      <button data-tool="point" class="tool">点</button>
+      <button data-tool="line" class="tool">直线</button>
+      <button data-tool="rect" class="tool">矩形</button>
+      <button data-tool="circle" class="tool">圆</button>
+      <button data-tool="free" class="tool">手绘</button>
+      <label class="speed-inline">速度
+        <input id="pathSpeed" type="range" min="5" max="80" value="25">
+        <span id="pathSpeedVal">0.25 m/s</span>
+      </label>
+    </div>
+    <div class="canvas-wrap">
+      <canvas id="field" width="600" height="600"></canvas>
+    </div>
+    <div class="legend">
+      <span><i class="dot car"></i>小车</span>
+      <span><i class="dot plan"></i>规划</span>
+      <span><i class="dot trail"></i>轨迹</span>
+      <span><i class="dot target"></i>目标</span>
+      <span id="hint" class="hint">选择工具后在场地内点击/拖拽</span>
+    </div>
+  </section>
+
+  <aside class="side">
+    <section class="card">
+      <h2>运动控制</h2>
+      <div class="kv"><span>模式</span><b id="navMode">日常</b></div>
+      <div class="kv"><span>使能</span><b id="enabled">否</b></div>
+      <div class="kv"><span>导航状态</span><b id="motionState">IDLE</b></div>
+      <div class="kv"><span>段进度</span><b id="progress">0/0</b></div>
+      <div class="kv"><span>横向误差</span><b id="crossTrack">0 mm</b></div>
+      <div class="kv"><span>位姿</span><b id="poseText">--</b></div>
+      <div class="kv"><span>故障</span><b id="faults">0x0000</b></div>
+      <div class="turn-row">
+        <label>原地转角度<input id="turnDeg" type="number" value="90" step="5"></label>
+        <button id="btnTurn">转向</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>摇杆</h2>
+      <div class="joy-wrap">
+        <canvas id="joy" width="180" height="180"></canvas>
+      </div>
+      <div class="kv"><span>输出</span><b id="joyOut">v 0.00 / w 0.00</b></div>
+      <p class="tiny">按住摇杆控制，松开自动发零速。需要先使能。</p>
+    </section>
+
+    <section class="card">
+      <h2>速度与 PID</h2>
+      <label>最大线速度 <input id="maxV" type="number" step="0.05" min="0.05" max="0.8" value="0.6"> m/s</label>
+      <label>最大角速度 <input id="maxW" type="number" step="0.1" min="0.1" max="2.5" value="2.0"> rad/s</label>
+      <button id="btnSpeed">下发速度上限</button>
+      <div class="grid3">
+        <label>Kp<input id="kp" type="number" step="0.05" value="1.2"></label>
+        <label>Ki<input id="ki" type="number" step="0.05" value="0.6"></label>
+        <label>Kd<input id="kd" type="number" step="0.01" value="0.02"></label>
+      </div>
+      <button id="btnPid">下发 PID（四轮）</button>
+      <div class="row">
+        <button id="btnSave">保存到 STM32</button>
+        <button id="btnLoad">从 STM32 读取</button>
+        <button id="btnReset" class="warn">恢复默认</button>
+      </div>
+      <div class="row">
+        <button id="btnBackup">备份到 ESP32</button>
+        <button id="btnRestore">从 ESP32 恢复</button>
+      </div>
+    </section>
+  </aside>
+</main>
+
+<section class="bottom">
+  <div class="card">
+    <h2>ToF 多点标定</h2>
+    <div class="calib-grid">
+      <label>传感器
+        <select id="calSensor"><option value="0">前向</option><option value="1">右向</option></select>
+      </label>
+      <label>已知距离 mm<input id="calKnown" type="number" value="300" min="50" max="3500"></label>
+      <button id="calStart">开始</button>
+      <button id="calSample">采样</button>
+      <button id="calFit">拟合并应用</button>
+      <button id="calSave">保存到 Flash</button>
+      <button id="calReset" class="warn">复位标定</button>
+    </div>
+    <div class="kv"><span>采样点数</span><b id="calCount">0</b></div>
+    <div class="kv"><span>最近原始值</span><b id="calRaw">--</b></div>
+    <div class="kv"><span>当前 gain/offset</span><b id="calGain">1.000 / 0 mm</b></div>
+    <p class="tiny">至少两个点（例如 300 mm、1500 mm），先开始→采样→再采样→拟合并应用→保存。</p>
+  </div>
+
+  <div class="card">
+    <h2>参数回读</h2>
+    <div class="param-grid">
+      <div><span>最大速度</span><b id="pMaxV">--</b></div>
+      <div><span>最大角速度</span><b id="pMaxW">--</b></div>
+      <div><span>导航模式</span><b id="pMode">--</b></div>
+      <div><span>前向 gain</span><b id="pFg">--</b></div>
+      <div><span>前向 offset</span><b id="pFo">--</b></div>
+      <div><span>右向 gain</span><b id="pRg">--</b></div>
+      <div><span>右向 offset</span><b id="pRo">--</b></div>
+    </div>
+    <button id="btnReadParams">读取全部参数</button>
+  </div>
+
+  <div class="card chart-card">
+    <h2>实时曲线</h2>
+    <canvas id="chartXY" width="620" height="150"></canvas>
+    <canvas id="chartTof" width="620" height="150"></canvas>
+  </div>
+</section>
+
+<section class="card debug-card">
+  <div class="debug-head">
+    <h2>Debug / 错误窗口</h2>
+    <button id="btnClearLog">清空</button>
+  </div>
+  <pre id="debugLog">等待连接…</pre>
+</section>
+
+<footer>
+  <span id="statusLine">等待数据…</span>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

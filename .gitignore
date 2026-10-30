@@ -1,0 +1,37 @@
+# Build artifacts
+car-/MDK-ARM/stm/
+car-/MDK-ARM/RTE/
+car-/MDK-ARM/*.lst
+car-/MDK-ARM/*.uvguix.*
+car-/MDK-ARM/*.uvoptx
+car-/MDK-ARM/*.bak
+car-/build*.log
+car_up_tools/build/
+car_up_tools/.vscode/
+car_up_tools/.devcontainer/
+
+# Temporary files
+~$*
+新建 文本文档.txt
+*.tmp
+*.bak
+*.orig
+*.rej
+
+# Python caches
+__pycache__/
+*.py[cod]
+
+# Vendor CMSIS components not used by this firmware.
+# HAL, CMSIS Core, CMSIS Device/ST and CMSIS Include are kept.
+car-/Drivers/CMSIS/DSP/
+car-/Drivers/CMSIS/NN/
+car-/Drivers/CMSIS/RTOS/
+car-/Drivers/CMSIS/RTOS2/
+car-/Drivers/CMSIS/Core_A/
+car-/Drivers/CMSIS/docs/
+car-/Drivers/CMSIS/Lib/
+
+# User-specific IDE files
+*.uvguix.*
+*.code-workspace
