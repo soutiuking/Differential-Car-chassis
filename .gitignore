@@ -35,3 +35,25 @@ car-/Drivers/CMSIS/Lib/
 # User-specific IDE files
 *.uvguix.*
 *.code-workspace
+
+# PCB fabrication / export artifacts.
+# The EDA source archive (.epro) is tracked; these generated outputs are not.
+*.gbr
+*.gbrjob
+*.drl
+*.nc
+*.gtl
+*.gbl
+*.gts
+*.gbs
+*.gto
+*.gbo
+*.gko
+*.gm1
+*.rpt
+/Gerber/
+/Gerbers/
+/Fabrication/
+/fabrication/
+/PCB_Export/
+/pcb_output/

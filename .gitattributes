@@ -15,6 +15,12 @@
 *.bin binary
 *.hex binary
 *.axf binary
+*.epro binary
+*.esch binary
+*.epcb binary
+*.epan binary
+*.efoo binary
+*.esym binary
 
 # Vendored ST code and generated startup assembly keep their original whitespace.
 car-/Drivers/** -whitespace

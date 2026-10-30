@@ -11,6 +11,7 @@ docs/                 协议、定位、按键/LED、构建指南
 ## 快速入口
 
 - [构建指南](docs/BUILD_GUIDE.md)
+- [PCB 工程与制造产物管理](docs/PCB_GUIDE.md)
 - [串口控制协议](car-/docs/CONTROL_PROTOCOL.md)
 - [工程总览：按键/LED/OLED/调试窗口](car-/docs/PROJECT_OVERVIEW.md)
 - [定位与 EKF](car-/docs/NAVIGATION.md)
