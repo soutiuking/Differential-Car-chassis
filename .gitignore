@@ -57,3 +57,11 @@ car-/Drivers/CMSIS/Lib/
 /fabrication/
 /PCB_Export/
 /pcb_output/
+/BOM/
+/bom/
+*_BOM.csv
+*_PickAndPlace.csv
+*gerber*.zip
+*fabrication*.zip
+/*_PCB.pdf
+/*_SCH.pdf
