@@ -19,16 +19,21 @@
 # Build artifacts and directories
 **/build/
 build/
+build-*/
+build_*/
 *.o
 *.a
 *.out
-*.exe # For any host-side utilities compiled on Windows
+# Host-side utilities compiled on Windows
+*.exe
 
 # ESP-IDF specific build outputs
 *.bin
 *.elf
 *.map
-flasher_args.json # Generated in build directory
+# Generated flash arguments
+flasher_args.json
+# Track sdkconfig.defaults (and target-specific defaults), not local config.
 sdkconfig.old
 sdkconfig
 
@@ -47,6 +52,10 @@ CMakeFiles/
 cmake_install.cmake
 install_manifest.txt
 CTestTestfile.cmake
+build.ninja
+rules.ninja
+.ninja_deps
+.ninja_log
 
 # Python environment files
 *.pyc
@@ -73,6 +82,8 @@ Desktop.ini
 
 # User-specific configuration files
 *.user
-*.workspace # General workspace files, can be from various tools
-*.suo       # Visual Studio Solution User Options
-*.sln.docstates # Visual Studio
+# General workspace files
+*.workspace
+# Visual Studio user options
+*.suo
+*.sln.docstates

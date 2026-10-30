@@ -13,7 +13,8 @@ docs/                 协议、定位、按键/LED、构建说明
 - 主分支：`main`
 - STM32 构建产物：`car-/MDK-ARM/stm/`，不提交
 - ESP32 构建产物：`car_up_tools/build/`，不提交
-- 应用源码、Keil 工程、ESP-IDF 工程、`sdkconfig`、文档、协议说明提交
+- 应用源码、网页资源、必要驱动、Keil 工程（`.uvprojx`/启动汇编）、CubeMX 配置（`.ioc`）、ESP-IDF 工程（`CMakeLists.txt`/`sdkconfig.defaults`）、文档、协议说明提交
+- 本地 `sdkconfig` 及其备份不提交；需要共享的 ESP-IDF 配置更新到 `sdkconfig.defaults`，新增组件的清单和依赖锁文件应提交
 - CMSIS/HAL 只提交本工程需要的部分，未使用的 DSP/NN/RTOS 组件已在 `.gitignore` 中排除
 
 提交前检查：
@@ -194,13 +195,21 @@ URL:      http://192.168.4.1/
 
 `.gitignore` 已排除：
 
-- `car-/MDK-ARM/stm/`
-- `car_up_tools/build/`
-- `.uvguix.*`、`.uvoptx`
+- Keil 的 `stm/`、`Objects/`、`Listings/`、`RTE/` 输出目录，以及散落在 `MDK-ARM/` 内的 `.o`、`.d`、`.crf`、`.axf`、`.hex`、`.map`、`.lst` 等产物
+- ESP-IDF 的 `build/`、`build-*/`、`build_*/`，固件 `.bin`/`.elf`/`.map`，CMake/Ninja 缓存，以及自动下载的 `managed_components/`
+- `.uvguix.*`、`.uvoptx`、本地 `sdkconfig`/`sdkconfig.old`、构建日志
 - `__pycache__`
 - 未使用的 CMSIS DSP/NN/RTOS 组件
 
 发布时只需要提交源码和文档；固件二进制通过 Release 附件或构建产物发布，不建议直接提交到主分支。
+
+检查已跟踪文件是否命中忽略规则（正常应无输出）：
+
+```powershell
+git ls-files -ci --exclude-standard
+```
+
+如果旧版本曾提交过构建产物，添加忽略规则后还需用 `git rm --cached -- <文件>`（目录加 `-r`）取消跟踪；本地构建文件会保留。
 
 ## 5. 版本对应的协议
 

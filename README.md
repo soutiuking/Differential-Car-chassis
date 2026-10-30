@@ -38,7 +38,8 @@ docs/                 协议、定位、按键/LED、构建指南
 ## Git 约定
 
 - 主分支 `main`
-- 不提交 `car-/MDK-ARM/stm/`、`car_up_tools/build/`、IDE 用户文件
+- 提交 STM32/ESP32 核心源码、网页资源、必要的 HAL/CMSIS 驱动、Keil 工程、CubeMX 配置、CMake 配置和 `sdkconfig.defaults`
+- 不提交 Keil/ESP-IDF 构建目录、固件二进制、编译中间文件、日志、IDE 用户文件和本地 `sdkconfig`；具体范围见两级 `.gitignore`
 - 协议或帧格式变化时，同步更新 `car-/docs/CONTROL_PROTOCOL.md` 和网页端
 - 发布时打 tag，例如：
 

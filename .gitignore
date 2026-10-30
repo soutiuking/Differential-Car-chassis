@@ -1,12 +1,29 @@
-# Build artifacts
+# Keil MDK build artifacts (keep .uvprojx, startup sources and debug config).
 car-/MDK-ARM/stm/
+car-/MDK-ARM/**/Objects/
+car-/MDK-ARM/**/Listings/
 car-/MDK-ARM/RTE/
-car-/MDK-ARM/*.lst
+car-/MDK-ARM/**/*.o
+car-/MDK-ARM/**/*.obj
+car-/MDK-ARM/**/*.d
+car-/MDK-ARM/**/*.crf
+car-/MDK-ARM/**/*.dep
+car-/MDK-ARM/**/*.axf
+car-/MDK-ARM/**/*.elf
+car-/MDK-ARM/**/*.hex
+car-/MDK-ARM/**/*.bin
+car-/MDK-ARM/**/*.map
+car-/MDK-ARM/**/*.lst
+car-/MDK-ARM/**/*.lnp
+car-/MDK-ARM/**/*.build_log.htm
 car-/MDK-ARM/*.uvguix.*
 car-/MDK-ARM/*.uvoptx
 car-/MDK-ARM/*.bak
+car-/build*/
 car-/build*.log
-car_up_tools/build/
+/build*.log
+
+# ESP-IDF outputs/config caches are covered by car_up_tools/.gitignore.
 car_up_tools/.vscode/
 car_up_tools/.devcontainer/
 
